@@ -1,0 +1,87 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  html {
+    font-size: 62.5%;
+  }
+  body {
+    font-family: "merriweather", sans-serif;
+    background-image: url(back.jpg);
+    background-size: contain;
+}
+
+  
+  
+  .bg-image {
+    height: 100%;
+  }
+  
+  h1 {
+    color: whitesmoke;
+  }
+  
+  .btn {
+    /* display: flex; */
+    text-decoration: none;
+    color: rgb(78, 146, 188);
+    text-align: center;
+  
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 1.2rem 1.2rem;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: all 0.8s;
+  }
+  
+  .btn-getting-started:hover,
+  .btn-getting-started:active {
+    text-decoration: none;
+    background-color: rgba(210, 217, 224, 0.992);
+    color: #14191f;
+  }
+  
+  #button {
+    display: flex;
+  
+    justify-content: space-around;
+  }
+  
+  .btn:link,
+  .btn:visited {
+    background-color: rgb(208, 204, 204);
+    color: #14191f;
+    padding: 50rem, 50rem;
+  }
+  
+  .btn-log-in:hover,
+  .btn-log-in:active {
+    text-decoration: none;
+    background-color: rgba(210, 217, 224, 0.992);
+    color: #14191f;
+  }
+  
+  .btn-log-in:link,
+  .btn-log-in:visited {
+    background-color: #14191f;
+    padding: 50rem, 50rem;
+  }
+  
+  .heading {
+    text-align: center;
+    font-size: 5rem;
+    padding-top: 22rem;
+    padding-bottom: 2rem;
+  }
+  
+  .login {
+    display: flex;
+    flex-direction: column;
+  }
+  .staring {
+    display: flex;
+    flex-direction: column;
+  }

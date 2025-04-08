@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Time Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      background-image: url(https://cdn.pixabay.com/animation/2023/03/19/02/34/02-34-11-741_512.gif);
+    }
+
+    #home{
+    height: 10%;
+    width: 100%;
+}
+
+#homebtn{
+    color: #1b1c1e;
+    background-color: #e1d0d0;
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    border-color: transparent;
+}
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: rgb(97, 92, 92);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: hsl(0, 10%, 74%);
+    }
+    input[type="time"] {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .slot {
+      background: #ffffff;
+      margin: 5px 0;
+      padding: 10px;
+      border-left: 5px solid #28a745;
+    }
+    .no-slots {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="home">
+    <a href="index.html"><button id="homebtn">Home</button></a>
+</div>
+  <div class="container">
+    <h2>🧘‍♀️ Smart Schedule Sync</h2>
+    <div id="schedule-list"></div>
+    <div>
+      <input type="time" id="start-time" /> 
+      <input type="time" id="end-time" />
+      <input type="text" id="event-name" placeholder="Event name (e.g. Math Class)" />
+      <button onclick="addEvent()">Add Event</button>
+    </div>
+    <button onclick="findFreeTime()">Find Free Slots</button>
+    <div id="free-slots"></div>
+  </div>
+
+  <script>
+    const schedule = [];
+
+    function addEvent() {
+  const start = document.getElementById("start-time").value;
+  const end = document.getElementById("end-time").value;
+  const name = document.getElementById("event-name").value.trim() || "Unnamed Event";
+
+  if (start && end && start < end) {
+    schedule.push({ start, end, name });
+    displaySchedule();
+  } else {
+    alert("Please enter a valid time range.");
+  }
+
+  // Optional: Clear inputs
+  document.getElementById("start-time").value = '';
+  document.getElementById("end-time").value = '';
+  document.getElementById("event-name").value = '';
+}
+
+
+function displaySchedule() {
+  const list = document.getElementById("schedule-list");
+  list.innerHTML = "<h4>📅 Today's Schedule:</h4>";
+  schedule.sort((a, b) => a.start.localeCompare(b.start));
+  schedule.forEach((s, i) => {
+    const duration = timeDiffInMinutes(s.start, s.end);
+    list.innerHTML += `<div>${i + 1}. ${s.start} - ${s.end} | 🏷️ ${s.name} | ⏱️ ${duration} min</div>`;
+  });
+}
+
+
+    function findFreeTime() {
+  const freeDiv = document.getElementById("free-slots");
+  freeDiv.innerHTML = "";
+
+  const dayStart = "08:00";
+  const dayEnd = "20:00";
+
+  let lastEnd = dayStart;
+  let freeSlots = [];
+
+  schedule.sort((a, b) => a.start.localeCompare(b.start));
+
+  schedule.forEach(({ start, end }) => {
+    if (lastEnd < start) {
+      const duration = timeDiffInMinutes(lastEnd, start);
+      if (duration >= 30) {
+        freeSlots.push({ start: lastEnd, end: start, duration });
+      }
+    }
+    if (end > lastEnd) lastEnd = end;
+  });
+
+  if (lastEnd < dayEnd) {
+    const duration = timeDiffInMinutes(lastEnd, dayEnd);
+    if (duration >= 30) {
+      freeSlots.push({ start: lastEnd, end: dayEnd, duration });
+    }
+  }
+
+  if (freeSlots.length === 0) {
+    freeDiv.innerHTML = '<p class="no-slots">No free slots of 30+ minutes found.</p>';
+  } else {
+    freeSlots.forEach(slot => {
+      const label = slot.duration < 60 ? "🎮 Play Time" : "📚 Study Time";
+      freeDiv.innerHTML += `
+        <div class="slot">
+          🕒 ${slot.start} - ${slot.end} &nbsp; → <strong>${label}</strong>
+        </div>`;
+    });
+  }
+}
+
+    function timeDiffInMinutes(start, end) {
+      const [h1, m1] = start.split(":").map(Number);
+      const [h2, m2] = end.split(":").map(Number);
+      return (h2 * 60 + m2) - (h1 * 60 + m1);
+    }
+  </script>
+</body>
+</html>
